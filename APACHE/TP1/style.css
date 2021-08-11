@@ -1,0 +1,52 @@
+.icon {
+    fill: white;
+}
+
+body {
+    margin: 0;
+    border: 0;
+    padding: auto;
+    background-image: url(img/autoroute-autoroot_background.jpg);
+    background-size: cover;
+}
+
+.top-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.top-nav li {
+    display: inline;
+    float: left;
+}
+
+.top-nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.top-nav li a:hover {
+    background-color: #111;
+}
+
+h1 {
+    margin: 0;
+    padding: 20%;
+    color: rgb(255, 255, 255);
+    display: block;
+    text-align: center;
+}
+
+#home-info {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+    color: white;
+}
+

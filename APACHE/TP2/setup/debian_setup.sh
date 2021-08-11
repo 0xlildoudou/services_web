@@ -29,15 +29,28 @@ function docker_install()
 
 function tp2_environement_make()
  {
-    mkdir -p ~/docker_partage/
+    #Site web file 
+    mkdir -p ~/docker_partage/site/{site-www,site-blog,site-other}
     chmod 775 -R ~/docker_partage/
     # TO DO git clone the web site in TP1
-    echo "Site web dans Docker OK" > ~/docker_partage/index.html
+    echo -e "Site web en www dans Docker OK" > ~/docker_partage/site/site-www/index.html
+    echo -e "Site web en blog dans Docker OK" > ~/docker_partage/site/site-blog/index.html
+    echo -e "Site web other dans Docker OK" > ~/docker_partage/site/site-other/index.html
+    #Nginx configuration file
+    mkdir -p ~/docker_partage/config/
+    cp ./base_default.conf ~/docker_partage/config/
+    echo "Quel est le nom du site en www ?"
+    read sitewww
+    echo "Quel est le nom du site en blog ?"
+    read siteblog
+    echo "Quel est le nom du site en ip ?"
+    read siteother
+    sed -e "s/site01/$sitewww" -e "s/site02/$siteblog" -e "s/ip1/$siteother" base_default.conf >> default.conf
 }
 
 function start_web_site()
 {
-    docker run -it --rm -d -p 80:80 --name web -v /root/docker_partage/:/usr/share/nginx/html nginx 
+    docker run -it -d -p 80:80 --name web -v /root/docker_partage/site:/usr/share/nginx/html -v /root/docker_partage/config:/etc/nginx/conf.d nginx 
 }
 
 
