@@ -92,7 +92,7 @@ function ssl_docker_implementation ()
     then
         if [ -f "~/docker_partage/config/default.conf" ]
         then
-            sed -e "s/^#mark for x509 certificate/ssl on;\n sll_certificate /etc/nginx/ssl/#website.crt;\n ssl_certificate_key /etc/nginx/ssl/#website.key;/" /root/docker_partage/config/default.conf > /root/docker_partage/config/default.conf.temp
+            sed -e "s/^#mark for x509 certificate/ssl on;\n ssl_certificate /etc/nginx/ssl/#website.crt;\n ssl_certificate_key /etc/nginx/ssl/#website.key;/" /root/docker_partage/config/default.conf > /root/docker_partage/config/default.conf.temp
             sed -e "s/^#website.crt/$website.crt" -e "s/^#website.key/$website.key" /root/docker_partage/config/default.conf.temp > /root/docker_partage/config/default.conf
             cp /etc/ssl/$website.key /root/docker_partage/config/$website.key
             cp /etc/ssl/$website.crt /root/docker_partage/config/$website.crt
@@ -100,8 +100,8 @@ function ssl_docker_implementation ()
             docker exec web mkdir /etc/nginx/ssl
             docker exec web cp /etc/nginx/$website.crt /etc/nginx/ssl/$website.crt
             docker exec web cp /etc/nginx/$website.key /etc/nginx/ssl/$website.key
+            docker restart web
         fi
-    else
     fi
 }
 
