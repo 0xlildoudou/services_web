@@ -86,6 +86,28 @@ function x509_crt ()
     fi
 }
 
+function ssl_docker_implementation ()
+{
+    if [ "$(docker ps -a -f name="web")" ]
+    then
+        if [ -f "~/docker_partage/config/default.conf" ]
+        then
+            sed -e "s/^#mark for x509 certificate/ssl on;\n sll_certificate /etc/nginx/ssl/#website.crt;\n ssl_certificate_key /etc/nginx/ssl/#website.key;/" /root/docker_partage/config/default.conf > /root/docker_partage/config/default.conf.temp
+            sed -e "s/^#website.crt/$website.crt" -e "s/^#website.key/$website.key" /root/docker_partage/config/default.conf.temp > /root/docker_partage/config/default.conf
+            cp /etc/ssl/$website.key /root/docker_partage/config/$website.key
+            cp /etc/ssl/$website.crt /root/docker_partage/config/$website.crt
+            docker restart web
+            docker exec web mkdir /etc/nginx/ssl
+            docker exec web cp /etc/nginx/$website.crt /etc/nginx/ssl/$website.crt
+            docker exec web cp /etc/nginx/$website.key /etc/nginx/ssl/$website.key
+        fi
+    else
+    fi
+}
+
+#################
+# START Script  #
+#################
 echo "Do you want install SSL certificate for website ? [y:n]"
 read validation
 case $validation in 
@@ -113,3 +135,13 @@ esac
 echo -e "Create x509 certificate"
 x509_crt
 echo -e "${GREEN}x509 Certificate is created${NC}"
+
+echo "Do you want install SSL certificate ? [y:n]"
+read validation
+case $validation in
+    [Yy]*) ssl_docker_implementation
+        echo -e "${GREEN}...${NC}";;
+    [Nn]*) echo -e "${ORANGE}SSL certificate not implemented${NC}";;
+    *) echo -e "${RED}Syntax error${NC}" 
+        exit 0;;
+esac
