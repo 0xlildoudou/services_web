@@ -50,7 +50,7 @@ function tp2_environement_make()
 
 function start_web_site()
 {
-    docker run -it --rm -d -p 80:80 --name web -v /root/docker_partage/site:/usr/share/nginx/html -v /root/docker_partage/config:/etc/nginx/conf.d nginx 
+    docker run -it -d -p 80:80 --name web -v /root/docker_partage/site:/usr/share/nginx/html -v /root/docker_partage/config:/etc/nginx/conf.d nginx 
 }
 
 
